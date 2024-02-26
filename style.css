@@ -1,0 +1,63 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+
+.title {
+    text-align: center;
+    padding: 1rem;
+    font-size: 48px;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 50px;
+    max-width: 1140px;
+    margin: 0 auto;
+
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 200px;
+}
+
+button:hover,
+#picker:hover {
+    
+    transform: scale(1.05);
+}
+
+button.active {
+    background-color: grey;
+}
+
+button,
+#picker {
+    width: 150px;
+    height: 50px;
+    padding: 0.2rem;
+    cursor: pointer;
+}
+.grid {
+    width: 640px;
+    display: grid;
+    height: 640px;
+    border: solid black 5px;
+}
+
+.grid > div {
+    user-select: none;
+    
+}
+
