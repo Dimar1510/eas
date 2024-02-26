@@ -7,18 +7,29 @@ const btnColor = document.querySelector('#btnColor')
 const btnBorders = document.querySelector('#btnBorders')
 const picker = document.querySelector('#picker')
 const btnRgb = document.querySelector('#btnRgb')
+const pickerBg = document.querySelector('#pickerBg')
+const btnGrab = document.querySelector('#grab')
 
 let currentSize = 16
 let currentMode = 'color'
 let toggleBorder = false;
-let currentColor = 'black';
+let currentColor = '#000000';
+let currentBg = '#ffffff'
+
 createGrid(currentSize);
 checkBtn();
+
+// grab button
+btnGrab.addEventListener('click', () => {
+    currentMode = 'grab';
+    checkBtn();
+    
+})
 
 // color button
 btnColor.addEventListener('click', () => {
     currentMode = 'color';
-    checkBtn();
+    checkBtn();   
 })
 
 // RGB button
@@ -52,7 +63,14 @@ btnBorders.addEventListener('click', () => {
 
 // color selector
 picker.addEventListener('input', (event) => {
-    currentColor = `${event.target.value}`;
+    currentColor = event.target.value;
+    
+})
+
+// background selector
+pickerBg.addEventListener('input', (event) => {
+    currentBg = event.target.value;
+    grid.style.backgroundColor = currentBg;
 })
 
 // size selector
@@ -60,7 +78,7 @@ selector.addEventListener('input', (event) => {
     currentSize = event.target.value;
     clearGrid();
     createGrid(currentSize);
-    sizeValue.textContent = `${event.target.value} x ${event.target.value}`;
+    sizeValue.textContent = `Grid size: ${event.target.value} x ${event.target.value}`;
 })
 
 // clear button
@@ -69,7 +87,8 @@ btnReset.addEventListener('click', () => {
     createGrid(currentSize)})
 
 
-// buttons 
+// functions 
+
 function checkBtn() {
     if (currentMode == 'rgb') btnRgb.classList.add('active');
     else btnRgb.classList.remove('active');
@@ -79,17 +98,16 @@ function checkBtn() {
 
     if (currentMode == 'erase') btnErase.classList.add('active');
     else btnErase.classList.remove('active');
+
+    if (currentMode == 'grab') btnGrab.classList.add('active');
+    else btnGrab.classList.remove('active');
 }
 
-
-
-let mouseDown = false
-document.body.onmousedown = () => (mouseDown = true)
-document.body.onmouseup = () => (mouseDown = false)
 
 function clearGrid() {
         grid.innerHTML='';
 }
+
 
 function createGrid(s) {
     grid.style.gridTemplateColumns = `repeat(${s}, 1fr)`
@@ -103,7 +121,13 @@ function createGrid(s) {
     }
 }
 
+
+let mouseDown = false
+document.body.onmousedown = () => (mouseDown = true)
+document.body.onmouseup = () => (mouseDown = false)
+
 function changeColor(e) {
+    // we need to check both mouseover and mousedown, but those are mutualy exclusive, so we implement a var
     if (e.type === 'mouseover' && !mouseDown) return
     if (currentMode == 'rgb') {
         const randomR = Math.floor(Math.random() * 256)
@@ -113,8 +137,23 @@ function changeColor(e) {
     } else if (currentMode == 'color') {
         e.target.style.backgroundColor = currentColor;
     } else if (currentMode == 'erase') {
-        e.target.style.backgroundColor = 'white'; 
+        e.target.style.backgroundColor = ""; 
+    } else if (currentMode == 'grab') {
+        if (e.target.style.backgroundColor != "") {
+        picker.value = rgbToHex(e.target.style.backgroundColor);
+        currentColor = e.target.style.backgroundColor;
+        currentMode = 'color';
+        checkBtn(); 
+        }
     }
+}
 
-  }
-
+function rgbToHex(rgb) {
+    let char = rgb.indexOf(',') > -1 ? ',' : ' ';
+    rgb = rgb.substr(4).split(')')[0].split(char);
+    let r = (+rgb[0]),
+      g = (+rgb[1]),
+      b = (+rgb[2]);
+    return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
+   
+}

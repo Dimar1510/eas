@@ -12,12 +12,20 @@
     </div>
     <main class="main">
         <div class="buttons">
-            <input type="color" name="picker" id="picker" value="black">
+            <div class="color">
+                <div><input type="color" name="picker" id="picker" value="#000000"></div>
+                <div>Pen color</div>
+            </div>
+            <div class="color">
+                <div><input type="color" name="picker" id="pickerBg" value="#ffffff"></div>
+                <div>Background color</div>
+            </div>
+            <button id="grab">Color Grabber</button>
             <button id="btnColor">Color Mode</button>
             <button id="btnRgb">RGB Mode</button>
             <button id="btnErase">Eraser</button>
             <button id="btnReset">Clear</button>
-            <div id="sizeValue">16 x 16</div>
+            <div id="sizeValue">Grid size: 16 x 16</div>
             <input id="sizeSelector" type="range" value="16" min="4" max="64">
             <button id="btnBorders">Toggle borders</button>
         </div>
